@@ -1,0 +1,69 @@
+
+<div class="row justify-content-center contenedorJuego">
+    
+    <div class="jumbotron pad">
+
+        <div class="row justify-content-center">
+            <div>
+                <button name="restart" class="btn btn-lg" (click)="restart()">
+                    <i *ngIf="estadoDeJuego == 0" class="icon fas fa-smile" style="font-size: 36px"></i>
+                    <i *ngIf="estadoDeJuego == 1" class="icon fas fa-dizzy" style="font-size: 36px"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div  [ngClass]="{'cajaMensaje': estadoDeJuego == 1 || estadoDeJuego == 2}">
+            <div class="table-responsive">    
+                <table class="table table-bordered table-hover-cells" [ngClass]="{'opacidad': estadoDeJuego == 1 || estadoDeJuego == 2}">
+                    <tbody>
+                        <tr *ngFor="let row of tablero; index as rowIndex;">
+                            <td class="celda" *ngFor="let cell of row; index as columnIndex;">
+                            
+                                <div class="celda-content" (contextmenu)="onRightClick(rowIndex,columnIndex)" 
+                                     (click)="onLeftClick(rowIndex,columnIndex)" [ngClass]="{'selected':cell.descubierta == 1}">
+                            
+                                    <span *ngIf="cell.bandera">
+                                        <img class="bandera" src="../../../assets/img/bandera.jpg">
+                                    </span>
+                                
+                                    <span *ngIf="cell.esMina && cell.descubierta">
+                                        <img class="mina" src="../../../assets/img/mina.png">
+                                    </span>
+                                
+                                    <span style="font-size: 24px" *ngIf="!cell.esMina && cell.probabilidad > 0 && cell.descubierta"
+                                          [ngClass]="{
+                                                      'text-primary':cell.probabilidad == 1,
+                                                      'text-success':cell.probabilidad == 2,
+                                                      'text-danger':cell.probabilidad == 3
+                                                    }">
+                                        {{cell.probabilidad}}
+                                    </span>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <app-cronometro></app-cronometro>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div *ngIf="estadoDeJuego == 1" class="gameStatus">
+                    <img src="../../../assets/img/gameOver.gif" alt="">
+                </div>
+
+                <div *ngIf="estadoDeJuego == 2" class="gameStatus">
+                    <img src="../../../assets/img/win.png" alt="">
+                </div>
+
+                <!-- <h1 *ngIf="estadoDeJuego == 1" class="text-danger">¡¡GAME OVER!!</h1> -->
+                <!-- <h1 *ngIf="estadoDeJuego == 2" class="text-success">¡¡VICTORIA!!</h1> -->
+            </div>
+        </div>
+
+        <div class="col text-center">
+            <button type="submit" class="btn btn-primary" [routerLink]="['/']">Volver</button>
+        </div>
+    </div>
+
+</div>
